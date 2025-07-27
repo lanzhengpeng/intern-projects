@@ -1,0 +1,24 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(520,5): warning MSB8004: Output 目录未以斜杠结尾。  此生成实例将添加斜杠，因为必须有这个斜杠才能正确计算 Output 目录。
+  pch.cpp
+  dllmain.cpp
+D:\Siemens\NX10\UGOPEN\NXOpen\NXException.hxx(26,53): warning C4275: 非 dll 接口 class“std::exception”用作 dll 接口 class“NXOpen::NXException”的基
+  (编译源文件“dllmain.cpp”)
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\vcruntime_exception.h(49,24):
+      参见“std::exception”的声明
+      D:\Siemens\NX10\UGOPEN\NXOpen\NXException.hxx(26,27):
+      参见“NXOpen::NXException”的声明
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\filesystem(12): warning STL4038: The contents of <filesystem> are available only with C++17 or later.
+D:\NX\ModelToImagesNX10\dllmain.cpp(56,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\NX\ModelToImagesNX10\dllmain.cpp(120,11): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\NX\ModelToImagesNX10\dllmain.cpp(125,10): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\NX\ModelToImagesNX10\dllmain.cpp(79,3): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\NX\ModelToImagesNX10\dllmain.cpp(139,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\NX\ModelToImagesNX10\dllmain.cpp(146,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\NX\ModelToImagesNX10\dllmain.cpp(157,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\NX\ModelToImagesNX10\dllmain.cpp(180,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\NX\ModelToImagesNX10\dllmain.cpp(184,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\NX\ModelToImagesNX10\dllmain.cpp(194,3): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\NX\ModelToImagesNX10\dllmain.cpp(205,3): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+    正在创建库 D:\NX\startup\ModelToImagesNX10.lib 和对象 D:\NX\startup\ModelToImagesNX10.exp
+  CreateImagesDllNX10.vcxproj -> D:\NX\startup\ModelToImagesNX10.dll
