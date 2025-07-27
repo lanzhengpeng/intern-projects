@@ -1,0 +1,336 @@
+### 【3042】use udo to track solid box dimensions 使用UDO来跟踪实体盒子的尺寸
+
+#### 代码
+
+```cpp
+    /*HEAD USE_UDO_TO_TRACK_SOLID_BOX_DIMENSIONS CCC UFUN */  
+    #include <stdio.h>  
+    #include <string.h>  
+    #include <uf.h>  
+    #include <uf_ui.h>  
+    #include <uf_udobj.h>  
+    #include <uf_obj.h>  
+    #include <uf_object_types.h>  
+    #include <uf_modl.h>  
+    #include <uf_csys.h>  
+    #include <uf_part.h>  
+    #include <uf_trns.h>  
+    #include <uf_vec.h>  
+    #include <uf_exit.h>  
+    #include <uf_attr.h>  
+    #define UF_CALL(X) (report_error( __FILE__, __LINE__, #X, (X)))  
+    static int report_error( char *file, int line, char *call, int irc)  
+    {  
+        if (irc)  
+        {  
+            char err[133],  
+                 msg[133];  
+            sprintf(msg, "*** ERROR code %d at line %d in %s:\n+++ ",  
+                irc, line, file);  
+            UF_get_fail_message(irc, err);  
+        /*  NOTE:  UF_print_syslog is new in V18 里海译:根据文档内容，UF_print_syslog 是在 V18 版本中新增的。 */  
+            UF_print_syslog(msg, FALSE);  
+            UF_print_syslog(err, FALSE);  
+            UF_print_syslog("\n", FALSE);  
+            UF_print_syslog(call, FALSE);  
+            UF_print_syslog(";\n", FALSE);  
+            if (!UF_UI_open_listing_window())  
+            {  
+                UF_UI_write_listing_window(msg);  
+                UF_UI_write_listing_window(err);  
+                UF_UI_write_listing_window("\n");  
+                UF_UI_write_listing_window(call);  
+                UF_UI_write_listing_window(";\n");  
+            }  
+        }  
+        return(irc);  
+    }  
+    static int allocate_memory(unsigned int nbytes, void **where)  
+    {  
+        int  
+            resp;  
+        *where = UF_allocate_memory(nbytes, &resp);  
+        return resp;  
+    }  
+    static int ask_udo_links(tag_t udo, UF_UDOBJ_link_t **links)  
+    {  
+        int  
+            ii,  
+            n;  
+        UF_UDOBJ_all_data_t  
+            data;  
+        UF_CALL(UF_UDOBJ_ask_udo_data(udo, &data));  
+        n = data.num_links;  
+        if (!UF_CALL(allocate_memory(n * sizeof(UF_UDOBJ_link_t), (void **)links)))  
+            for (ii = 0; ii < n; ii++)  
+                (*links)[ii] = data.link_defs[ii];  
+        UF_CALL(UF_UDOBJ_free_udo_data(&data));  
+        return n;  
+    }  
+    static void map_abs2csys(tag_t input_csys, double vec[3])  
+    {  
+        double  
+            abs_mx[9] = { 0,0,0, 1,0,0, 0,1,0 },  
+            csys[12],  
+            mx[12];  
+        int  
+            irc;  
+        tag_t  
+            csys_mx;  
+        UF_CALL(UF_CSYS_ask_csys_info(input_csys, &csys_mx, csys));  
+        UF_CALL(UF_CSYS_ask_matrix_values(csys_mx, &csys[3]));  
+        FTN(uf5940)(abs_mx, csys, mx, &irc);  
+        UF_CALL(irc);  
+        FTN(uf5941)(vec, mx);  
+        UF_VEC3_sub(vec, csys, vec);  
+    }  
+    static void display_temporary_box(double llc[3], double urc[3], tag_t csys)  
+    {  
+        double  
+            dirs[9],  
+            delta_x[3],  
+            delta_y[3],  
+            delta_z[3],  
+            end[3],  
+            mag,  
+            sizes[3],  
+            start[3];  
+        tag_t  
+            csys_mx;  
+        UF_OBJ_disp_props_t  
+            props = { 1, UF_OBJ_WHITE, UF_OBJ_NOT_BLANKED, UF_OBJ_WIDTH_NORMAL,  
+                UF_OBJ_FONT_SOLID, FALSE};  
+        UF_VEC3_copy(llc, start);  
+        map_abs2csys(csys, start);  
+        UF_VEC3_copy(urc, end);  
+        map_abs2csys(csys, end);  
+        UF_VEC3_sub(end, start, sizes);  
+        UF_CALL(UF_CSYS_ask_csys_info(csys, &csys_mx, dirs));  
+        UF_CALL(UF_CSYS_ask_matrix_values(csys_mx, dirs));  
+        UF_VEC3_unitize(&dirs[0], 0, &mag, &dirs[0]);  
+        UF_VEC3_unitize(&dirs[3], 0, &mag, &dirs[3]);  
+        UF_VEC3_unitize(&dirs[6], 0, &mag, &dirs[6]);  
+        UF_VEC3_scale(sizes[0], &dirs[0], delta_x);  
+        UF_VEC3_scale(sizes[1], &dirs[3], delta_y);  
+        UF_VEC3_scale(sizes[2], &dirs[6], delta_z);  
+        UF_VEC3_add(llc, delta_x, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            llc, end, &props));  
+        UF_VEC3_add(llc, delta_y, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            llc, end, &props));  
+        UF_VEC3_add(llc, delta_z, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            llc, end, &props));  
+        UF_VEC3_sub(urc, delta_x, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            urc, end, &props));  
+        UF_VEC3_sub(urc, delta_y, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            urc, end, &props));  
+        UF_VEC3_sub(urc, delta_z, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            urc, end, &props));  
+        UF_VEC3_add(llc, delta_x, start);  
+        UF_VEC3_add(start, delta_y, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            start, end, &props));  
+        UF_VEC3_add(start, delta_z, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            start, end, &props));  
+        UF_VEC3_sub(end, delta_x, start);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            start, end, &props));  
+        UF_VEC3_add(start, delta_y, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            start, end, &props));  
+        UF_VEC3_sub(end, delta_z, start);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            start, end, &props));  
+        UF_VEC3_add(start, delta_x, end);  
+        UF_CALL(UF_DISP_display_temporary_line(NULL_TAG, UF_DISP_USE_ACTIVE_PLUS,  
+            start, end, &props));  
+    }  
+    /* qq3123197280 */  
+    DllExport extern void update_solid_box(tag_t udo, UF_UDOBJ_link_p_t update_cause)  
+    {  
+        int  
+            alive = 0,  
+            ii,  
+            jj,  
+            n,  
+            subtype,  
+            status,  
+            type;  
+        tag_t  
+            body,  
+            csys,  
+            part,  
+            mx;  
+        double  
+            dir[3][3],  
+            dist[3],  
+            max[3],  
+            min[3],  
+            origin[3] = { 0,0,0 };  
+        char  
+            att_str[UF_ATTR_MAX_STRING_LEN+1],  
+            exp_str[UF_MAX_EXP_LENGTH+1];  
+        UF_UDOBJ_link_t  
+            *links;  
+        UF_ATTR_value_t  
+            value;  
+        if (UF_CALL(UF_initialize())) return;  
+        part = UF_PART_ask_display_part();  
+        n = ask_udo_links(udo, &links);  
+        if (n == 2)  
+        {  
+            for (ii = 0; ii < 2; ii++)  
+            {  
+                status = UF_OBJ_ask_status(links[ii].assoc_ug_tag);  
+                alive = alive + status;  
+                if (status != UF_OBJ_ALIVE) break;  
+                UF_CALL(UF_OBJ_ask_type_and_subtype(links[ii].assoc_ug_tag, &type, &subtype));  
+                switch (subtype)  
+                {  
+                    case UF_solid_body_subtype:  
+                        body = links[ii].assoc_ug_tag;  
+                        break;  
+                    case UF_solid_face_subtype:  
+                        UF_CALL(UF_CSYS_ask_matrix_of_object(links[ii].assoc_ug_tag, &mx));  
+                        break;  
+                }  
+            }  
+        }  
+        if (n > 0) UF_free(links);  
+        if (alive == 6) /* both objects are UF_OBJ_ALIVE 里海译:两个对象都处于活动状态。 */  
+        {  
+            UF_CALL(UF_CSYS_create_temp_csys(origin, mx, &csys));  
+            UF_CALL(UF_MODL_ask_bounding_box_exact(body, csys, min, dir, dist));  
+            for (ii = 0; ii < 3; ii++)  
+            {  
+                max[ii] = min[ii];  
+                for (jj = 0; jj < 3; jj++)  
+                    max[ii] += dir[jj][ii] * dist[jj];  
+            }  
+            UF_DISP_refresh();  
+            display_temporary_box(min, max, csys);  
+            value.type = UF_ATTR_real;  
+            value.value.real = dist[0];  
+            UF_CALL(UF_ATTR_assign(body, "Box Size X", value));  
+            value.value.real = dist[1];  
+            UF_CALL(UF_ATTR_assign(body, "Box Size Y", value));  
+            value.value.real = dist[2];  
+            UF_CALL(UF_ATTR_assign(body, "Box Size Z", value));  
+            value.type = UF_ATTR_string;  
+            value.value.string = att_str;  
+            sprintf(att_str, "%.3f", dist[0]);  
+            UF_CALL(UF_ATTR_assign(part, "Box Size X", value));  
+            sprintf(att_str, "%.3f", dist[1]);  
+            UF_CALL(UF_ATTR_assign(part, "Box Size Y", value));  
+            sprintf(att_str, "%.3f", dist[2]);  
+            UF_CALL(UF_ATTR_assign(part, "Box Size Z", value));  
+            sprintf(exp_str, "BoxX=%.3f", dist[0]);  
+            if (UF_MODL_create_exp(exp_str)) UF_MODL_edit_exp(exp_str);  
+            sprintf(exp_str, "BoxY=%.3f", dist[1]);  
+            if (UF_MODL_create_exp(exp_str)) UF_MODL_edit_exp(exp_str);  
+            sprintf(exp_str, "BoxZ=%.3f", dist[2]);  
+            if (UF_MODL_create_exp(exp_str)) UF_MODL_edit_exp(exp_str);  
+        }  
+        UF_terminate();  
+    }  
+    static UF_UDOBJ_class_t register_udo(void)  
+    {  
+        UF_UDOBJ_class_t  
+            class_id;  
+        UF_CALL(UF_UDOBJ_create_class("SolBox", "Solid Box", &class_id));  
+        UF_CALL(UF_UDOBJ_register_update_cb(class_id, update_solid_box));  
+        UF_CALL(UF_UDOBJ_set_query_class_id(class_id, UF_UDOBJ_ALLOW_QUERY_CLASS_ID));  
+        return class_id;  
+    }  
+    /* qq3123197280 */  
+    void ufsta(char *param, int *retcode, int paramLen)  
+    {  
+        if (UF_CALL(UF_initialize())) return;  
+        register_udo();  
+        UF_terminate();  
+    }  
+    /* qq3123197280 */  
+    static int mask_for_planar_face(UF_UI_selection_p_t select, void *type)  
+    {  
+        UF_UI_mask_t  
+            mask = { UF_solid_type, 0, UF_UI_SEL_FEATURE_PLANAR_FACE };  
+        if (!UF_CALL(UF_UI_set_sel_mask(select,  
+                UF_UI_SEL_MASK_CLEAR_AND_ENABLE_SPECIFIC, 1, &mask)))  
+            return (UF_UI_SEL_SUCCESS);  
+        else  
+            return (UF_UI_SEL_FAILURE);  
+    }  
+    static tag_t select_planar_face(char *prompt)  
+    {  
+        int  
+            resp;  
+        double  
+            cp[3];  
+        tag_t  
+            object,  
+            view;  
+        UF_CALL(UF_UI_select_with_single_dialog("Select planar face", prompt,  
+            UF_UI_SEL_SCOPE_WORK_PART,  
+            mask_for_planar_face, NULL, &resp, &object, cp, &view));  
+        if (resp == UF_UI_OBJECT_SELECTED || resp == UF_UI_OBJECT_SELECTED_BY_NAME)  
+        {  
+            UF_CALL(UF_DISP_set_highlight(object, FALSE));  
+            return object;  
+        }  
+        return NULL_TAG;  
+    }  
+    static void do_it(void)  
+    {  
+        tag_t  
+            body,  
+            face,  
+            part = UF_PART_ask_display_part(),  
+            udo = NULL_TAG;  
+        UF_UDOBJ_link_t  
+            link_defs[2];  
+        UF_UDOBJ_class_t  
+            class_id;  
+        if (UF_UDOBJ_ask_class_id_of_name("SolBox", &class_id))  
+            class_id = register_udo();  
+        if ((face = select_planar_face("Select face of solid to box")) != NULL_TAG)  
+        {  
+            UF_CALL(UF_UDOBJ_cycle_udos_by_class(part, class_id, &udo));  
+            if (udo != NULL_TAG) UF_CALL(UF_OBJ_delete_object(udo));  
+            UF_CALL(UF_MODL_ask_face_body(face, &body));  
+            link_defs[0].link_type = 1;  
+            link_defs[0].assoc_ug_tag = body;  
+            link_defs[1].link_type = 1;  
+            link_defs[1].assoc_ug_tag = face;  
+            UF_CALL(UF_UDOBJ_create_udo(class_id, &udo));  
+            UF_CALL(UF_UDOBJ_add_links(udo, 2, link_defs));  
+            update_solid_box(udo, &link_defs[0]);  
+        }  
+    }  
+    /* qq3123197280 */  
+    void ufusr(char *param, int *retcode, int paramLen)  
+    {  
+        if (UF_CALL(UF_initialize())) return;  
+        do_it();  
+        UF_terminate();  
+    }
+
+```
+
+#### 代码解析
+
+> 这是段NX二次开发代码，主要实现了以下功能：
+>
+> 1. 定义了一个用户定义对象(UDO)类SolBox，用于关联一个实体和一个面，并更新该实体的尺寸信息。
+> 2. 在UDO的更新回调函数update_solid_box中，根据关联的实体和面，计算实体的尺寸，并显示临时框表示尺寸，同时将尺寸信息赋值给实体和零件的属性。
+> 3. 在ufusr函数中，用户可以选择一个面，然后创建一个SolBox UDO，关联该面所属的实体和面，并更新尺寸信息。
+> 4. 使用了UF_UDOBJ, UF_MODL, UF_DISP, UF_ATTR等NX API，实现了实体选择、尺寸计算、属性赋值、临时显示等功能。
+> 5. 代码结构清晰，包含错误处理、内存分配等辅助函数，注释详细，易于理解和扩展。
+> 6. 通过UDO关联实体和面，可以实时跟踪实体的尺寸变化，为后续的自动化设计提供了基础。
+> 7. 代码质量较高，遵循NX二次开发规范，可作为NX二次开发的学习范例。
+>

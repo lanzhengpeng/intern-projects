@@ -1,0 +1,121 @@
+### 【0152】ask angle edge ask angle edge：询问角度边缘
+
+#### 代码
+
+```cpp
+    /*HEAD ASK_ANGLE_EDGE CCC UFUN */  
+    #include <stdio.h>  
+    #include <stdlib.h>  
+    #include <string.h>  
+    #include <uf.h>  
+    #include <uf_modl.h>  
+    #include <uf_part.h>  
+    #include <uf_object_types.h>  
+    #include <uf_ui.h>  
+    #define ECHO(X)    (printf("%s = %d\n", #X, X))  
+    #define UF_CALL(X) (report_error( __FILE__, __LINE__, #X, (X)))  
+    static int report_error( char *file, int line, char *call, int irc)  
+    {  
+        if (irc)  
+        {  
+            char err[133],  
+                 msg[133];  
+            sprintf(msg, "*** ERROR code %d at line %d in %s:\n+++ ",  
+                irc, line, file);  
+            UF_get_fail_message(irc, err);  
+        /*  NOTE:  UF_print_syslog is new in V18 译:根据文中内容，UF_print_syslog是V18版本新增的功能，请只回答翻译内容，不要添加其他无关内容。
+
+翻译内容如下：
+
+注意：UF_print_syslog是V18版本新增的功能。 */  
+            UF_print_syslog(msg, FALSE);  
+            UF_print_syslog(err, FALSE);  
+            UF_print_syslog("\n", FALSE);  
+            UF_print_syslog(call, FALSE);  
+            UF_print_syslog(";\n", FALSE);  
+            if (!UF_UI_open_listing_window())  
+            {  
+                UF_UI_write_listing_window(msg);  
+                UF_UI_write_listing_window(err);  
+                UF_UI_write_listing_window("\n");  
+                UF_UI_write_listing_window(call);  
+                UF_UI_write_listing_window(";\n");  
+            }  
+        }  
+        return(irc);  
+    }  
+    static tag_t select_a_feature(char *prompt)  
+    {  
+        int  
+            cnt,  
+            resp;  
+        tag_t  
+            first,  
+            *feats;  
+        UF_CALL(UF_UI_select_feature(prompt, NULL, &cnt, &feats, &resp));  
+        if (cnt)  
+        {  
+            first = feats[0];  
+            UF_free(feats);  
+            return (first);  
+        }  
+        else return (NULL_TAG);  
+    }  
+    static void do_it(void)  
+    {  
+        int     count, ii;  
+        char    *how_far, *type;  
+        tag_t   feat, object;  
+        tag_t   edge_on_tool, edge_on_target;  
+        double  fixed1[2], fixed2[2], feature1[2], feature2[2];  
+        uf_list_p_t   constraints;  
+        feat = select_a_feature("Select feature");  
+        UF_CALL( UF_MODL_create_list( &constraints));  
+        UF_CALL( UF_MODL_ask_constraints( feat, &constraints));  
+        UF_CALL( UF_MODL_ask_list_count( constraints, &count));  
+            printf("\n\nNumber of constraints: %d\n", count);  
+            printf("\tConstraint types\n");  
+        for( ii = 0; ii < count; ii++)  
+        {  
+            UF_MODL_ask_list_item( constraints, ii, &object);  
+            UF_MODL_ask_constraint_type( object, &type);  
+            printf("\t%d) %s\n", ii+1, type);  
+            if( strstr( type, "ANGL_EDGE_PARMS") != NULL)  
+            {  
+                UF_CALL( UF_MODL_ask_angle_edge( feat, object, 1, fixed1, fixed2,  
+                     feature1, feature2, &how_far, &edge_on_tool, &edge_on_target));  
+                printf("\t   Expression distance: %s\n", how_far);  
+            }  
+        }  
+        UF_free( how_far);  
+        UF_free( type);  
+    }  
+    void ufusr(char *param, int *retcode, int paramLen)  
+    {  
+        if (UF_CALL(UF_initialize())) return;  
+        do_it();  
+        UF_terminate();  
+    }  
+    int ufusr_ask_unload(void)  
+    {  
+        return (UF_UNLOAD_IMMEDIATELY);  
+    }
+
+```
+
+#### 代码解析
+
+> 这段代码是一个NX的二次开发示例，主要功能包括：
+>
+> 1. 错误报告函数：report_error，用于打印UF函数调用失败的错误代码和消息。
+> 2. 选择特征函数：select_a_feature，用于在图形区域选择一个特征。
+> 3. 主功能函数：do_it，用于：选择一个特征询问特征的所有约束遍历约束列表，打印每个约束的类型如果约束类型是角度边约束，则询问角度边约束的参数，并打印
+> 4. 选择一个特征
+> 5. 询问特征的所有约束
+> 6. 遍历约束列表，打印每个约束的类型
+> 7. 如果约束类型是角度边约束，则询问角度边约束的参数，并打印
+> 8. UF初始化和终止函数：ufusr，用于在NX启动时调用UF初始化，执行主功能，然后UF终止。
+> 9. 卸载函数：ufusr_ask_unload，用于在卸载NX时立即卸载二次开发库。
+>
+> 整体而言，这段代码实现了选择特征、询问约束、打印约束类型、打印角度边约束参数等功能，是一个典型的NX二次开发示例，通过UF函数实现了NX的自动化操作。
+>
