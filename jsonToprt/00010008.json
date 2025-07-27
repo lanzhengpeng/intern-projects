@@ -1,0 +1,728 @@
+[
+    {
+        "coordinate_system": {
+            "Euler Angles": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Translation Vector": [
+                0.0522,
+                0.0332,
+                0.0
+            ]
+        },
+        "sketch": {
+            "line_1": {
+                "start": [
+                    0.2079,
+                    0.4459
+                ],
+                "end": [
+                    0.0,
+                    0.0
+                ]
+            },
+            "line_2": {
+                "start": [
+                    0.0,
+                    0.0
+                ],
+                "end": [
+                    0.1465,
+                    0.0
+                ]
+            },
+            "line_3": {
+                "start": [
+                    0.1465,
+                    0.0
+                ],
+                "end": [
+                    0.1907,
+                    0.0949
+                ]
+            },
+            "line_4": {
+                "start": [
+                    0.1907,
+                    0.0949
+                ],
+                "end": [
+                    0.4549,
+                    0.0949
+                ]
+            },
+            "line_5": {
+                "start": [
+                    0.4549,
+                    0.0949
+                ],
+                "end": [
+                    0.4991,
+                    0.0
+                ]
+            },
+            "line_6": {
+                "start": [
+                    0.4991,
+                    0.0
+                ],
+                "end": [
+                    0.6456,
+                    0.0
+                ]
+            },
+            "line_7": {
+                "start": [
+                    0.6456,
+                    0.0
+                ],
+                "end": [
+                    0.4377,
+                    0.4459
+                ]
+            },
+            "line_8": {
+                "start": [
+                    0.4377,
+                    0.4459
+                ],
+                "end": [
+                    0.2079,
+                    0.4459
+                ]
+            },
+            "line_9": {
+                "start": [
+                    0.3215,
+                    0.3504
+                ],
+                "end": [
+                    0.2448,
+                    0.186
+                ]
+            },
+            "line_10": {
+                "start": [
+                    0.2448,
+                    0.186
+                ],
+                "end": [
+                    0.3982,
+                    0.186
+                ]
+            },
+            "line_11": {
+                "start": [
+                    0.3982,
+                    0.186
+                ],
+                "end": [
+                    0.3215,
+                    0.3504
+                ]
+            }
+        },
+        "constraints": {
+            "Coincident": [
+                [
+                    "line_2.end",
+                    "line_3.start"
+                ],
+                [
+                    "line_2.start",
+                    "line_1.end"
+                ],
+                [
+                    "line_3.end",
+                    "line_4.start"
+                ],
+                [
+                    "line_4.end",
+                    "line_5.start"
+                ],
+                [
+                    "line_5.end",
+                    "line_6.start"
+                ],
+                [
+                    "line_6.end",
+                    "line_7.start"
+                ],
+                [
+                    "line_7.end",
+                    "line_8.start"
+                ],
+                [
+                    "line_1.start",
+                    "line_8.end"
+                ],
+                [
+                    "line_11.start",
+                    "line_10.end"
+                ],
+                [
+                    "line_11.end",
+                    "line_9.start"
+                ],
+                [
+                    "line_10.start",
+                    "line_9.end"
+                ]
+            ]
+        },
+        "towards": 0.0513,
+        "opposite": 0.0,
+        "operation": "NewBody"
+    },
+    {
+        "coordinate_system": {
+            "Euler Angles": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Translation Vector": [
+                0.297,
+                0.2192,
+                0.0
+            ]
+        },
+        "sketch": {
+            "line_1": {
+                "start": [
+                    0.0767,
+                    0.1644
+                ],
+                "end": [
+                    0.0,
+                    0.0
+                ]
+            },
+            "line_2": {
+                "start": [
+                    0.0,
+                    0.0
+                ],
+                "end": [
+                    0.1534,
+                    0.0
+                ]
+            },
+            "line_3": {
+                "start": [
+                    0.1534,
+                    0.0
+                ],
+                "end": [
+                    0.0767,
+                    0.1644
+                ]
+            },
+            "line_4": {
+                "start": [
+                    0.0767,
+                    0.112
+                ],
+                "end": [
+                    0.0348,
+                    0.0222
+                ]
+            },
+            "line_5": {
+                "start": [
+                    0.0348,
+                    0.0222
+                ],
+                "end": [
+                    0.1186,
+                    0.0222
+                ]
+            },
+            "line_6": {
+                "start": [
+                    0.1186,
+                    0.0222
+                ],
+                "end": [
+                    0.0767,
+                    0.112
+                ]
+            }
+        },
+        "constraints": {
+            "Horizontal": [
+                "line_5"
+            ],
+            "Coincident": [
+                [
+                    "line_4.end",
+                    "line_5.start"
+                ],
+                [
+                    "line_6.start",
+                    "line_5.end"
+                ],
+                [
+                    "line_6.end",
+                    "line_4.start"
+                ],
+                [
+                    "line_3.start",
+                    "line_2.end"
+                ],
+                [
+                    "line_3.end",
+                    "line_1.start"
+                ],
+                [
+                    "line_2.start",
+                    "line_1.end"
+                ]
+            ]
+        },
+        "towards": 0.0665,
+        "opposite": 0.0,
+        "operation": "Join"
+    },
+    {
+        "coordinate_system": {
+            "Euler Angles": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Translation Vector": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "sketch": {
+            "line_1": {
+                "start": [
+                    0.2389,
+                    0.5123
+                ],
+                "end": [
+                    0.0,
+                    0.0
+                ]
+            },
+            "line_2": {
+                "start": [
+                    0.0,
+                    0.0
+                ],
+                "end": [
+                    0.2199,
+                    0.0
+                ]
+            },
+            "line_3": {
+                "start": [
+                    0.2199,
+                    0.0
+                ],
+                "end": [
+                    0.2641,
+                    0.0948
+                ]
+            },
+            "line_4": {
+                "start": [
+                    0.2641,
+                    0.0948
+                ],
+                "end": [
+                    0.4859,
+                    0.0948
+                ]
+            },
+            "line_5": {
+                "start": [
+                    0.4859,
+                    0.0948
+                ],
+                "end": [
+                    0.5302,
+                    0.0
+                ]
+            },
+            "line_6": {
+                "start": [
+                    0.5302,
+                    0.0
+                ],
+                "end": [
+                    0.75,
+                    0.0
+                ]
+            },
+            "line_7": {
+                "start": [
+                    0.75,
+                    0.0
+                ],
+                "end": [
+                    0.5111,
+                    0.5123
+                ]
+            },
+            "line_8": {
+                "start": [
+                    0.5111,
+                    0.5123
+                ],
+                "end": [
+                    0.2389,
+                    0.5123
+                ]
+            },
+            "line_9": {
+                "start": [
+                    0.2601,
+                    0.4791
+                ],
+                "end": [
+                    0.0522,
+                    0.0332
+                ]
+            },
+            "line_10": {
+                "start": [
+                    0.0522,
+                    0.0332
+                ],
+                "end": [
+                    0.1987,
+                    0.0332
+                ]
+            },
+            "line_11": {
+                "start": [
+                    0.1987,
+                    0.0332
+                ],
+                "end": [
+                    0.2429,
+                    0.1281
+                ]
+            },
+            "line_12": {
+                "start": [
+                    0.2429,
+                    0.1281
+                ],
+                "end": [
+                    0.5071,
+                    0.1281
+                ]
+            },
+            "line_13": {
+                "start": [
+                    0.5071,
+                    0.1281
+                ],
+                "end": [
+                    0.5513,
+                    0.0332
+                ]
+            },
+            "line_14": {
+                "start": [
+                    0.5513,
+                    0.0332
+                ],
+                "end": [
+                    0.6978,
+                    0.0332
+                ]
+            },
+            "line_15": {
+                "start": [
+                    0.6978,
+                    0.0332
+                ],
+                "end": [
+                    0.4899,
+                    0.4791
+                ]
+            },
+            "line_16": {
+                "start": [
+                    0.4899,
+                    0.4791
+                ],
+                "end": [
+                    0.2601,
+                    0.4791
+                ]
+            }
+        },
+        "constraints": {
+            "Horizontal": [
+                "line_8",
+                [
+                    "line_2.end",
+                    "line_1.end"
+                ],
+                "line_6"
+            ],
+            "Coincident": [
+                [
+                    "line_7.end",
+                    "line_8.start"
+                ],
+                [
+                    "line_1.start",
+                    "line_8.end"
+                ],
+                [
+                    "line_2.start",
+                    "line_1.end"
+                ],
+                [
+                    "line_6.end",
+                    "line_7.start"
+                ],
+                [
+                    "line_3.start",
+                    "line_2.end"
+                ],
+                [
+                    "line_5.end",
+                    "line_6.start"
+                ],
+                [
+                    "line_4.start",
+                    "line_3.end"
+                ],
+                [
+                    "line_4.end",
+                    "line_5.start"
+                ],
+                [
+                    "line_10.end",
+                    "line_11.start"
+                ],
+                [
+                    "line_10.start",
+                    "line_9.end"
+                ],
+                [
+                    "line_11.end",
+                    "line_12.start"
+                ],
+                [
+                    "line_12.end",
+                    "line_13.start"
+                ],
+                [
+                    "line_13.end",
+                    "line_14.start"
+                ],
+                [
+                    "line_14.end",
+                    "line_15.start"
+                ],
+                [
+                    "line_15.end",
+                    "line_16.start"
+                ],
+                [
+                    "line_9.start",
+                    "line_16.end"
+                ]
+            ],
+            "Parallel": [
+                [
+                    "line_6",
+                    "line_2",
+                    "line_8"
+                ]
+            ]
+        },
+        "towards": 0.0665,
+        "opposite": 0.0,
+        "operation": "Join"
+    },
+    {
+        "coordinate_system": {
+            "Euler Angles": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Translation Vector": [
+                0.0522,
+                0.0332,
+                0.0471
+            ]
+        },
+        "sketch": {
+            "line_1": {
+                "start": [
+                    0.2079,
+                    0.4459
+                ],
+                "end": [
+                    0.0,
+                    0.0
+                ]
+            },
+            "line_2": {
+                "start": [
+                    0.0,
+                    0.0
+                ],
+                "end": [
+                    0.1465,
+                    0.0
+                ]
+            },
+            "line_3": {
+                "start": [
+                    0.1465,
+                    0.0
+                ],
+                "end": [
+                    0.1907,
+                    0.0949
+                ]
+            },
+            "line_4": {
+                "start": [
+                    0.1907,
+                    0.0949
+                ],
+                "end": [
+                    0.4549,
+                    0.0949
+                ]
+            },
+            "line_5": {
+                "start": [
+                    0.4549,
+                    0.0949
+                ],
+                "end": [
+                    0.4991,
+                    0.0
+                ]
+            },
+            "line_6": {
+                "start": [
+                    0.4991,
+                    0.0
+                ],
+                "end": [
+                    0.6456,
+                    0.0
+                ]
+            },
+            "line_7": {
+                "start": [
+                    0.6456,
+                    0.0
+                ],
+                "end": [
+                    0.4377,
+                    0.4459
+                ]
+            },
+            "line_8": {
+                "start": [
+                    0.4377,
+                    0.4459
+                ],
+                "end": [
+                    0.2079,
+                    0.4459
+                ]
+            },
+            "line_9": {
+                "start": [
+                    0.3215,
+                    0.3504
+                ],
+                "end": [
+                    0.2448,
+                    0.186
+                ]
+            },
+            "line_10": {
+                "start": [
+                    0.2448,
+                    0.186
+                ],
+                "end": [
+                    0.3982,
+                    0.186
+                ]
+            },
+            "line_11": {
+                "start": [
+                    0.3982,
+                    0.186
+                ],
+                "end": [
+                    0.3215,
+                    0.3504
+                ]
+            }
+        },
+        "constraints": {
+            "Coincident": [
+                [
+                    "line_2.end",
+                    "line_3.start"
+                ],
+                [
+                    "line_2.start",
+                    "line_1.end"
+                ],
+                [
+                    "line_3.end",
+                    "line_4.start"
+                ],
+                [
+                    "line_4.end",
+                    "line_5.start"
+                ],
+                [
+                    "line_5.end",
+                    "line_6.start"
+                ],
+                [
+                    "line_6.end",
+                    "line_7.start"
+                ],
+                [
+                    "line_7.end",
+                    "line_8.start"
+                ],
+                [
+                    "line_1.start",
+                    "line_8.end"
+                ],
+                [
+                    "line_11.start",
+                    "line_10.end"
+                ],
+                [
+                    "line_11.end",
+                    "line_9.start"
+                ],
+                [
+                    "line_10.start",
+                    "line_9.end"
+                ]
+            ]
+        },
+        "towards": 0.0,
+        "opposite": 0.0471,
+        "operation": "Cut"
+    }
+]
